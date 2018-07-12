@@ -13,7 +13,9 @@ find_package(catkin REQUIRED COMPONENTS
 )
 
 ## System dependencies are found with CMake's conventions
-# find_package(Boost REQUIRED COMPONENTS system)
+find_package(Boost REQUIRED COMPONENTS system)
+
+set(pigpio_include "/usr/include")
 
 
 ## Uncomment this if the package has a setup.py. This macro ensures
@@ -117,6 +119,7 @@ catkin_package(
 include_directories(
 # include
   ${catkin_INCLUDE_DIRS}
+  ${pigpio_include}
 )
 
 ## Declare a C++ library
@@ -146,8 +149,10 @@ add_executable(${PROJECT_NAME}_node src/pigpio_test_node.cpp)
 
 ## Specify libraries to link a library or executable target against
 target_link_libraries(${PROJECT_NAME}_node
-  ${catkin_LIBRARIES}
+  ${catkin_LIBRARIES} pigpiod_if2
 )
+
+LINK_DIRECTORIES("/usr/lib")
 
 #############
 ## Install ##
