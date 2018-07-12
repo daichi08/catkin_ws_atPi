@@ -3,6 +3,7 @@
 #include "pigpiod_if2.h"
 
 #define RAD2DEG(x) ((x)*180./M_PI)
+#define HALF 500000
 
 float distance = 0;
 float angle;
@@ -38,18 +39,36 @@ void scanCallback(const sensor_msgs::LaserScan::ConstPtr& scan)
 
 int main(int argc, char **argv)
 {
-    ros::init(argc, argv, "rplidar_node_client");
-    ros::NodeHandle n;
+  ros::init(argc, argv, "rplidar_node_client");
+  ros::NodeHandle n;
 
-    pi = pigpio_start("localhost","8888");
-    set_mode(pi, pwmpin[0], PI_OUTPUT);
-    set_mode(pi, dirpin[0], PI_OUTPUT);
-    set_mode(pi, pwmpin[1], PI_OUTPUT);
-    set_mode(pi, dirpin[1], PI_OUTPUT);
+  pi = pigpio_start("localhost","8888");
+  set_mode(pi, pwmpin[0], PI_OUTPUT);
+  set_mode(pi, dirpin[0], PI_OUTPUT);
+  set_mode(pi, pwmpin[1], PI_OUTPUT);
+  set_mode(pi, dirpin[1], PI_OUTPUT);
 
-    ros::Subscriber sub = n.subscribe<sensor_msgs::LaserScan>("/scan", 1000, scanCallback);
+  ros::Subscriber sub = n.subscribe<sensor_msgs::LaserScan>("/scan", 1000, scanCallback);
 
-    ros::spin();
+  hardware_PWM(pi, pwmpin[0], 400, HALF);
+  hardware_PWM(pi, pwmpin[1], 400, HALF);
 
-    return 0;
+  //ros::spin();
+
+  // 出力信号の停止
+  hardware_PWM(pi, pwmpin[0], 0, 0);
+  gpio_write(pi, dirpin[0], PI_LOW);
+  hardware_PWM(pi, pwmpin[1], 0, 0);
+  gpio_write(pi, dirpin[1], PI_LOW);
+
+  // PINOUT -> PININ
+  set_mode(pi, pwmpin[0], PI_INPUT);
+  set_mode(pi, dirpin[0], PI_INPUT);
+  set_mode(pi, pwmpin[1], PI_INPUT);
+  set_mode(pi, dirpin[1], PI_INPUT);
+
+  // 終了
+  pigpio_stop(pi);
+
+  return 0;
 }
