@@ -1,0 +1,55 @@
+Determining if the pthread_create exist failed with the following output:
+Change Dir: /home/pi/catkin_ws/build_isolated/roswtf/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_1651e/fast"
+/usr/bin/make -f CMakeFiles/cmTC_1651e.dir/build.make CMakeFiles/cmTC_1651e.dir/build
+make[1]: ディレクトリ '/home/pi/catkin_ws/build_isolated/roswtf/CMakeFiles/CMakeTmp' に入ります
+Building C object CMakeFiles/cmTC_1651e.dir/CheckSymbolExists.c.o
+/usr/bin/cc     -o CMakeFiles/cmTC_1651e.dir/CheckSymbolExists.c.o   -c /home/pi/catkin_ws/build_isolated/roswtf/CMakeFiles/CMakeTmp/CheckSymbolExists.c
+Linking C executable cmTC_1651e
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_1651e.dir/link.txt --verbose=1
+/usr/bin/cc       CMakeFiles/cmTC_1651e.dir/CheckSymbolExists.c.o  -o cmTC_1651e -rdynamic 
+CMakeFiles/cmTC_1651e.dir/CheckSymbolExists.c.o: 関数 `main' 内:
+CheckSymbolExists.c:(.text+0x38): `pthread_create' に対する定義されていない参照です
+collect2: error: ld returned 1 exit status
+CMakeFiles/cmTC_1651e.dir/build.make:97: ターゲット 'cmTC_1651e' のレシピで失敗しました
+make[1]: *** [cmTC_1651e] エラー 1
+make[1]: ディレクトリ '/home/pi/catkin_ws/build_isolated/roswtf/CMakeFiles/CMakeTmp' から出ます
+Makefile:126: ターゲット 'cmTC_1651e/fast' のレシピで失敗しました
+make: *** [cmTC_1651e/fast] エラー 2
+
+File /home/pi/catkin_ws/build_isolated/roswtf/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <pthread.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef pthread_create
+  return ((int*)(&pthread_create))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+
+Determining if the function pthread_create exists in the pthreads failed with the following output:
+Change Dir: /home/pi/catkin_ws/build_isolated/roswtf/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_b53f8/fast"
+/usr/bin/make -f CMakeFiles/cmTC_b53f8.dir/build.make CMakeFiles/cmTC_b53f8.dir/build
+make[1]: ディレクトリ '/home/pi/catkin_ws/build_isolated/roswtf/CMakeFiles/CMakeTmp' に入ります
+Building C object CMakeFiles/cmTC_b53f8.dir/CheckFunctionExists.c.o
+/usr/bin/cc    -DCHECK_FUNCTION_EXISTS=pthread_create   -o CMakeFiles/cmTC_b53f8.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.7/Modules/CheckFunctionExists.c
+Linking C executable cmTC_b53f8
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_b53f8.dir/link.txt --verbose=1
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=pthread_create    CMakeFiles/cmTC_b53f8.dir/CheckFunctionExists.c.o  -o cmTC_b53f8 -rdynamic -lpthreads 
+/usr/bin/ld: -lpthreads が見つかりません
+collect2: error: ld returned 1 exit status
+CMakeFiles/cmTC_b53f8.dir/build.make:97: ターゲット 'cmTC_b53f8' のレシピで失敗しました
+make[1]: *** [cmTC_b53f8] エラー 1
+make[1]: ディレクトリ '/home/pi/catkin_ws/build_isolated/roswtf/CMakeFiles/CMakeTmp' から出ます
+Makefile:126: ターゲット 'cmTC_b53f8/fast' のレシピで失敗しました
+make: *** [cmTC_b53f8/fast] エラー 2
+
+
