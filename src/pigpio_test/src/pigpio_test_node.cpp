@@ -39,7 +39,7 @@ void scanCallback(const sensor_msgs::LaserScan::ConstPtr& scan)
 
 int main(int argc, char **argv)
 {
-  ros::init(argc, argv, "rplidar_node_client");
+  ros::init(argc, argv, "pigpio_test");
   ros::NodeHandle n;
 
   pi = pigpio_start("localhost","8888");
