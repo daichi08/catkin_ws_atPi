@@ -50,10 +50,10 @@ int main(int argc, char **argv)
 
   ros::Subscriber sub = n.subscribe<sensor_msgs::LaserScan>("/scan", 1000, scanCallback);
 
-  hardware_PWM(pi, pwmpin[0], 400, HALF);
-  hardware_PWM(pi, pwmpin[1], 400, HALF);
+  //hardware_PWM(pi, pwmpin[0], 400, HALF);
+  //hardware_PWM(pi, pwmpin[1], 400, HALF);
 
-  //ros::spin();
+  ros::spin();
 
   // 出力信号の停止
   hardware_PWM(pi, pwmpin[0], 0, 0);
