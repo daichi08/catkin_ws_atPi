@@ -1,12 +1,12 @@
 #include "ros/ros.h"
 #include "sensor_msgs/LaserScan.h"
 #include "pigpiod_if2.h"
+#include "math.h"
 
+//#define RAD2DEG(x) (fmodf((x+M_PI+0.5*M_PI)*180.0/M_PI, 360.0))
 #define RAD2DEG(x) ((x)*180./M_PI)
 #define HALF 500000
-
-float distance = 0;
-float angle;
+#define PHASE_DIFF 1.5*M_PI
 
 int pi;
 extern int pi;
@@ -17,24 +17,17 @@ static int dirpin[2] = {21, 20};
 void scanCallback(const sensor_msgs::LaserScan::ConstPtr& scan)
 {
   int count = scan->scan_time / scan->time_increment;
+  ros::Time t = ros::Time::now();
+  ros::Duration d = ros::Duration(0.5);
+  ROS_INFO("current time : %f", t);
 
   for(int i = 0; i < count; i++) {
-    float degree = RAD2DEG(scan->angle_min + scan->angle_increment * i);
-      if(90.0 <= degree || degree <= -90.0){
-        if(distance == 0){
-          distance = scan->ranges[i];
-          angle =  degree;
-        }else{
-          if(distance > scan->ranges[i]){
-            distance = scan->ranges[i];
-            angle =  degree;
-          }
-        }
+    float degree = RAD2DEG(fmodf(scan->angle_min + PHASE_DIFF + scan->angle_increment * i, 2*M_PI));
+    if(0.0 < degree && degree < 180.0){
+      //ROS_INFO("%f", scan->ranges[i]);
     }
   }
-  ROS_INFO(": [%f, %f]", distance, angle);
-  distance = 0;
-  angle = 0;
+  d.sleep();
 }
 
 int main(int argc, char **argv)
@@ -48,10 +41,11 @@ int main(int argc, char **argv)
   set_mode(pi, pwmpin[1], PI_OUTPUT);
   set_mode(pi, dirpin[1], PI_OUTPUT);
 
-  ros::Subscriber sub = n.subscribe<sensor_msgs::LaserScan>("/scan", 1000, scanCallback);
 
   //hardware_PWM(pi, pwmpin[0], 400, HALF);
   //hardware_PWM(pi, pwmpin[1], 400, HALF);
+
+  ros::Subscriber sub = n.subscribe<sensor_msgs::LaserScan>("/scan", 1000, scanCallback);
 
   ros::spin();
 
